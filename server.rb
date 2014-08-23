@@ -20,18 +20,25 @@
 #including the name of the opposing team and the scores for each team.
 ########
 
+require 'csv'
+require 'sinatra'
+require 'sinatra/reloader'
+require 'pry'
+
+set :public_folder, File.dirname(__FILE__) + '/public'
+set :views_folder, File.dirname(__FILE__) + '/views'
 
 #######################################
 #             Methods
 #######################################
 
-def read_csv(filename)
-  stats = []
-  CSV.foreach('filename', headers: true) do |row|
-    stats << row.to_hash
-  end
-  stats
-end
+# def read_csv(filename)
+#   stats = []
+#   CSV.foreach('filename', headers: true, header_converters: symbol) do |row|
+#     stats << row.to_hash
+#   end
+#   stats
+# end
 
 
 
@@ -40,14 +47,35 @@ end
 #######################################
 #              Routes
 #######################################
+stats = [
+  {
+    home_team: "Patriots",
+    away_team: "Broncos",
+    home_score: 7,
+    away_score: 3
+  },
+  {
+    home_team: "Broncos",
+    away_team: "Colts",
+    home_score: 3,
+    away_score: 0
+  },
+  {
+    home_team: "Patriots",
+    away_team: "Colts",
+    home_score: 11,
+    away_score: 7
+  },
+  {
+    home_team: "Steelers",
+    away_team: "Patriots",
+    home_score: 7,
+    away_score: 21
+  }
+]
 
-require ‘sinatra’
-# require ‘sinatra/reloader’
-require ‘pry’
-
-get ‘/leaderboard’ do
-     @stats = read_csv(‘game_stats.csv’)
-binding.pry
-     erb :’/ALC/leaderboard’
+get '/leaderboard' do
+  @stats = stats
+  erb :'/leaderboard'
 end
 

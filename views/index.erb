@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Basic HTML Page</title>
+    <link rel="stylesheet" href="home.css" />
+  </head>
+
+  <body>
+    <h2>Leaderboard</h2>
+
+      <ul>
+        <% @stats.each do |result| %>
+        <li><a href=“/teams/<%= result["away_team"]%>”><%= result["away_team"] %></a>
+        at
+        <a href=“/teams/<%= each %>”><%= result["home_team"] %></a> :
+        <%= result["away_score"] %> : <%= result["home_score"] %></li>
+        <% end %>
+      </ul>
+    </body>
+  </html>

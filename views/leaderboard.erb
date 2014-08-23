@@ -1,0 +1,10 @@
+<h2>Leaderboard</h2>
+
+<ul>
+     <% @stats.each do |team| %>
+     <li><a href=“/teams/<%= team[:away_team] %>”><%= team[:away_team] %></a>
+      at
+      <a href=“/teams/<%= team[:home_team] %>”><%= team[:home_team] %></a>
+        <%= team[:away_score] %> : <%= team[:home_score] %></a></li>
+     <% end %>
+</ul>
