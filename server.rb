@@ -34,7 +34,7 @@ set :views_folder, File.dirname(__FILE__) + '/views'
 
 # def read_csv(filename)
 #   stats = []
-#   CSV.foreach('filename', headers: true, header_converters: symbol) do |row|
+#   CSV.foreach('filename', headers: true) do |row|
 #     stats << row.to_hash
 #   end
 #   stats
@@ -73,6 +73,8 @@ stats = [
     away_score: 21
   }
 ]
+
+# read_csv('/public/game_stats.csv')
 
 get '/leaderboard' do
   @stats = stats
