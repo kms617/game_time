@@ -111,3 +111,9 @@ teams.each{|x| team_records[x] = team_wins, team_losses}
 #               "Broncos" => [1,1]
 #               "Steelers" => [0,1]
 #               "Colts" => [0,2]}
+
+get 'team/:team' do
+  @stats = stats
+  @team = params[:team]
+  erb :team
+end
