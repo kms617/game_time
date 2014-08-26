@@ -34,7 +34,7 @@ set :views_folder, File.dirname(__FILE__) + '/views'
 
 def read_csv(filename)
    stats = []
-   CSV.foreach('filename', headers: true) do |eachrow|
+   CSV.foreach(filename, headers: true, header_converters: :symbol, converters: :numeric) do |eachrow|
      stats << eachrow
    end
    stats
@@ -45,16 +45,56 @@ def read_csv(filename)
 #              Routes
 #######################################
 
-read_csv('/public/game_stats.csv')
+stats = read_csv('public/game_stats.csv')
 
+team_records = {}
+stats.each do |game|
+  # figure out who the winner/losers are
+  if game[:home_score] > game[:away_score]
+    winner = game[:home_team]
+    loser = game[:away_team]
+  else
+    winner = game[:away_team]
+    loser = game[:home_team]
+  end
 
-get '/leaderboard' do
-  @stats = stats
-  erb :'/leaderboard'
+  if !team_records.has_key?(winner)
+    team_records[winner] = [1, 0]
+  else
+    team_records[winner][0] += 1
+  end
+
+  if !team_records.has_key?(loser)
+    team_records[loser] = [0, 1]
+  else
+    team_records[loser][1] += 1
+  end
 end
 
-get 'team/:team' do
-  @stats = stats
-  @team = params[:team]
-  erb :team
+teams = []
+stats.each do |row|
+  teams << row[:home_team]
+  teams << row[:away_team]
 end
+  teams.uniq!
+
+
+## team_records looks like: {"Patriots"=>[3, 0], "Broncos"=>[1, 1], "Colts"=>[0, 2], "Steelers"=>[0, 1]}
+binding.pry
+
+sorted_teams = teams.sort_by do |team|
+  -team_records[team][0]
+  team_records[team][1]
+end
+
+ get '/leaderboard' do
+   @team_records = team_records
+   @sorted_teams = sorted_teams
+   erb :leaderboard
+ end
+
+# get 'team/:team' do
+#   @stats = stats
+#   @team = params[:team]
+#   erb :'team'
+# end

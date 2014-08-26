@@ -1,10 +1,17 @@
 <h2>Leaderboard</h2>
 
-<ul>
-     <% @stats.each do |team| %>
-     <li><a href=“/teams/<%= team[:away_team] %>”><%= team[:away_team] %></a>
-      at
-      <a href=“/teams/<%= team[:home_team] %>”><%= team[:home_team] %></a>
-        <%= team[:away_score] %> : <%= team[:home_score] %></a></li>
-     <% end %>
-</ul>
+<table>
+  <tr>
+    <th>Team</th>
+    <th>Wins</th>
+    <th>Losses</th>
+  </tr>
+  <% @sorted_teams.each do |team| %>
+    <tr>
+      <td><a href=“/teams/<%= team %>”><%= team %></a></td>
+      <td><%=@team_records[team][0]%></a></td>
+      <td><%= @team_records[team][1] %></a></td>
+    </tr>
+  <% end %>
+</table>
+
